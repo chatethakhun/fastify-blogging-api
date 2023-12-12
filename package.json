@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "preinstall": "prisma generate",
+    "preinstall": "prisma migrate deploy",
     "dev-build": "tsc -w",
     "dev": "tsnd --respawn --transpile-only --exit-child api/serverless.ts",
     "start": "node build/api/serverless.js"
@@ -11,13 +11,15 @@
     "@prisma/client": "^5.7.0",
     "@vercel/node": "^3.0.12",
     "dotenv": "^16.3.1",
-    "fastify": "^4.24.3"
+    "fastify": "^4.24.3",
+    "fastify-zod": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",
     "prisma": "^5.7.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
   }
 }

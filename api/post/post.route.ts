@@ -1,8 +1,9 @@
 import { FastifyInstance } from "fastify";
-import { getAllPostsHandler } from "./post.controller";
+import { createPostHandler, getAllPostsHandler } from "./post.controller";
 
 async function postRoutes(fastify: FastifyInstance) {
   fastify.get('/posts', getAllPostsHandler);
+  fastify.post('/posts', createPostHandler);
 }
 
 export default postRoutes;
