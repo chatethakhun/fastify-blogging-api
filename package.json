@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev-build": "tsc -w",
-    "dev": "nodemon build/api/serverless.js",
+    "dev": "tsnd --respawn --transpile-only --exit-child api/serverless.ts",
     "start": "node build/api/serverless.js"
   },
   "dependencies": {

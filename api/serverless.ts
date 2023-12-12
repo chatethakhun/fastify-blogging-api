@@ -7,6 +7,7 @@ dotenv.config();
 // Require the framework
 import Fastify from "fastify";
 import routes from "./routes/routes"
+import postRoutes from "./post/post.route";
 
 // Instantiate Fastify with some config
 const app = Fastify({
@@ -17,6 +18,7 @@ const app = Fastify({
 // app.register(import("../src/app.js"));
 
 app.register(routes, { prefix: 'api/v1'})
+app.register(postRoutes, { prefix: 'api/v1'})
 
 
 app.listen({
