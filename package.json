@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel": "vercel dev"
+    "build": "tsc -w",
+    "dev": "nodemon build/api/serverless.js",
+    "start": "node build/api/serverless.js"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.2",

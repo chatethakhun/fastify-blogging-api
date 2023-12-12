@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyReply, FastifyRequest, FastifyServerOptions } from 'fastify'
+import { FastifyInstance, FastifyReply, FastifyRequest, FastifyServerOptions, DoneFuncWithErrOrRes } from 'fastify'
 
 interface IQueryString {
     name: string;
@@ -16,7 +16,7 @@ interface CustomRouteGenericQuery {
     Querystring: IQueryString
 }
 
-export default async function (instance: FastifyInstance, opts: FastifyServerOptions, done) {
+export default async function (instance: FastifyInstance, opts: FastifyServerOptions, done: DoneFuncWithErrOrRes) {
 
 
     instance.get('/', async (req: FastifyRequest, res: FastifyReply) => {

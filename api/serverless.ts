@@ -6,6 +6,7 @@ dotenv.config();
 
 // Require the framework
 import Fastify from "fastify";
+import routes from "./routes/routes"
 
 // Instantiate Fastify with some config
 const app = Fastify({
@@ -13,9 +14,16 @@ const app = Fastify({
 });
 
 // Register your application as a normal plugin.
-app.register(import("../src/app.js"));
+// app.register(import("../src/app.js"));
 
-export default async (req, res) => {
+app.register(routes, { prefix: 'api/v1'})
+
+
+app.listen({
+  port: 3000,
+})
+
+export default async (req: Request, res: Response) => {
     await app.ready();
     app.server.emit('request', req, res);
 }
