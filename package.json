@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "preinstall": "prisma generate",
     "dev-build": "tsc -w",
     "dev": "tsnd --respawn --transpile-only --exit-child api/serverless.ts",
     "start": "node build/api/serverless.js"
