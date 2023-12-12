@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "tsc -w",
+    "dev-build": "tsc -w",
     "dev": "nodemon build/api/serverless.js",
     "start": "node build/api/serverless.js"
   },
