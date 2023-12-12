@@ -12,7 +12,7 @@ fastify.register(routes, { prefix: 'api/v1' });
 
 (async () => {
   await fastify.listen({
-    port: 3000,
+    port: 8080,
     host: "0.0.0.0",
   });
 })();
