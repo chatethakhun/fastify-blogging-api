@@ -10,6 +10,8 @@ import routes from "./routes/routes"
 import postRoutes from "./post/post.route";
 import userRoutes from "./user/user.route";
 
+import { auth } from '../middlewares/auth'
+
 // Instantiate Fastify with some config
 const app = Fastify({
   logger: true,
@@ -17,7 +19,7 @@ const app = Fastify({
 
 // Register your application as a normal plugin.
 // app.register(import("../src/app.js"));
-
+// app.addHook("preHandler", auth)
 app.register(routes, { prefix: 'api/v1'})
 app.register(postRoutes, { prefix: 'api/v1'})
 app.register(userRoutes)
