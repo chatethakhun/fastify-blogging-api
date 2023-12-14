@@ -8,7 +8,8 @@ export async function auth(req: FastifyRequest, reply: FastifyReply, done: DoneF
     const token = req.headers.authorization
 
     if (!token) {
-      return reply.status(401).send({ message: 'Unauthorized' })
+      reply.status(401).send({ message: 'Unauthorized' })
+      return
     }
 
     const tokenResponse = token.split(' ')[1]
@@ -16,7 +17,7 @@ export async function auth(req: FastifyRequest, reply: FastifyReply, done: DoneF
     const payload = await req.jwtVerify()
 
     if(!payload) {
-      return reply.status(401).send({ message: 'Unauthorized' })
+      reply.status(401).send({ message: 'Unauthorized' })
     }
     
     const user = await prisma.user.findUnique({
@@ -26,12 +27,12 @@ export async function auth(req: FastifyRequest, reply: FastifyReply, done: DoneF
     })
 
     if (!user) {
-      return reply.status(401).send({ message: 'Unauthorized' })
+      reply.status(401).send({ message: 'Unauthorized' })
     }
 
     done()
 
   } catch (error) {
-    return reply.status(401).send({ message: 'Unauthorized' })
+    reply.status(401).send({ message: 'Unauthorized' })
   }
 }
