@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyPluginAsync } from "fastify";
+import { FastifyInstance } from "fastify";
 import { signInHandler, signUpHandler } from "./user.controller";
 
 const userRoutes = async (fastify: FastifyInstance) => {
