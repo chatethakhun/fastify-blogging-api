@@ -2,7 +2,9 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { getAllPosts, createPost, updatePost, deletePost } from "./post.service"
 import { CreatePostInput } from "./post.schema";
 import { throwErrorMessage } from "../../utils/errorResponse";
-
+interface ErrorCode {
+  code: 'P2025'
+}
 export async function getAllPostsHandler(request: FastifyRequest, reply: FastifyReply) {
   const posts = await getAllPosts()
   return reply.send(posts).status(200)
@@ -11,7 +13,12 @@ export async function getAllPostsHandler(request: FastifyRequest, reply: Fastify
 export async function createPostHandler(request: { body: CreatePostInput } & FastifyRequest
   , reply: FastifyReply) {
   try {
-    const payload: TokenPayload = await request.jwtVerify()
+    const payload: {
+      username: string;
+      name: string;
+      id: number;
+      createdAt: Date;
+    } = await request.jwtVerify()
     const post = await createPost({
       ...request.body,
       userId: payload.id
