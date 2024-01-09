@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateUserInput } from "./user.schema";
-import { signIn, signUp } from "./user.service";
+import { signUp } from "./user.service";
 import prisma from "../../utils/prisma";
 import { compare } from "bcryptjs";
 
