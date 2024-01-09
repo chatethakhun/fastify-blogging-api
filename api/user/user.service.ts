@@ -2,7 +2,6 @@ import fastifyPlugin from 'fastify-plugin';
 import prisma from '../../utils/prisma';
 import { CreateUserInput } from './user.schema';
 import { hash, compare } from 'bcryptjs'
-import { app } from '../serverless';
 import fastify, { FastifyInstance } from 'fastify';
 // module.exports = fastifyPlugin(function(fastify: FastifyInstance) {
 //   export const signIn = async (data: CreateUserInput) => {
