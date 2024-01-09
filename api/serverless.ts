@@ -2,6 +2,7 @@ import { utils } from './helpers/utils';
 import fastify from 'fastify'
 import pino from 'pino';
 import fastifyMultipart from '@fastify/multipart';
+import fastifyJwt from '@fastify/jwt';
 import loadConfig from '../config';
 import uploadRoutes from './upload/upload.route';
 // import userRouter from './routes/user.router'
@@ -17,6 +18,7 @@ const startServer = async () => {
     })
     server.register(require('@fastify/formbody'))
     server.register(fastifyMultipart)
+    server.register(fastifyJwt)
     server.register(require('@fastify/cors'))
     server.register(require('@fastify/helmet'))
     server.register(uploadRoutes, { prefix: '/api/upload' })
