@@ -1,57 +1,61 @@
-"use strict";
+import { utils } from './helpers/utils';
+import fastify from 'fastify'
+import pino from 'pino';
+import fastifyMultipart from '@fastify/multipart';
+import loadConfig from '../config';
+import uploadRoutes from './upload/upload.route';
+// import userRouter from './routes/user.router'
+// import postRouter from './routes/post.router';
+loadConfig()
 
-// Read the .env file.
-import * as dotenv from "dotenv";
-dotenv.config();
+const port = process.env.API_PORT || 5000;
 
-// Require the framework
-import Fastify from "fastify";
-import routes from "./routes/routes"
-import postRoutes from "./post/post.route";
-import userRoutes from "./user/user.route";
-import uploadRoutes from './upload/upload.route'
-
-import fastifyJWT from "@fastify/jwt"
-import fastifyCors from "@fastify/cors"
-import fastifyFormbody from "@fastify/formbody";
-import fastifyMultipart from "@fastify/multipart";
-// Instantiate Fastify with some config
-
-const app = Fastify({
-  logger: true,
-});
-
-app.register(fastifyFormbody)
-app.register(fastifyMultipart, {
-  limits: {
-    files: 1
+const startServer = async () => {
+  try {
+    const server = fastify({
+      logger: pino({ level: 'info' }),
+    })
+    server.register(require('@fastify/formbody'))
+    server.register(fastifyMultipart)
+    server.register(require('@fastify/cors'))
+    server.register(require('@fastify/helmet'))
+    server.register(uploadRoutes, { prefix: '/api/upload' })
+    // server.register(userRouter, { prefix: '/api/user' })
+    // server.register(postRouter, { prefix: '/api/post' })
+    server.setErrorHandler((error, request, reply) => {
+      server.log.error(error);
+    })
+    server.get('/', (request, reply) => {
+      reply.send({ name: 'fastify-typescript' })
+    })
+    server.get('/health-check', async (request, reply) => {
+      try {
+        await utils.healthCheck()
+        reply.status(200).send()
+      } catch (e) {
+        reply.status(500).send()
+      }
+    })
+    if (process.env.NODE_ENV === 'production') {
+      for (const signal of ['SIGINT', 'SIGTERM']) {
+        process.on(signal, () =>
+          server.close().then((err) => {
+            console.log(`close application on ${signal}`)
+            process.exit(err ? 1 : 0)
+          }),
+        )
+      }
+    }
+    await server.listen(port)
+  } catch (e) {
+    console.error(e)
   }
-})
-
-
-app.register(fastifyCors, {
-  origin: '*',
-});
-if (!!process.env.JOSE_SECRET) {
-  app.register(import('@fastify/jwt'), {
-    secret: process.env.JOSE_SECRET,
-  });
 }
 
-// Register your application as a normal plugin.
-// app.register(import("../src/app.js"));
-// app.addHook("preHandler", auth)
-app.register(routes, { prefix: 'api/v1' })
-app.register(postRoutes, { prefix: 'api/v1' })
-app.register(uploadRoutes, { prefix: 'api/v1'})
-app.register(userRoutes)
-
-
-app.listen({
-  port: 3000,
+process.on('unhandledRejection', (e) => {
+  console.error(e)
+  process.exit(1)
 })
 
-export default async (req: Request, res: Response) => {
-  await app.ready();
-  app.server.emit('request', req, res);
-}
+startServer()
+

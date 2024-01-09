@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { uploadFile } from './upload.service'
 import fs from 'node:fs'
 import { pipeline } from "node:stream";
 import util from 'node:util'
@@ -8,8 +7,6 @@ const pump = util.promisify(pipeline)
 
 export const uploadHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     console.log('start upload');
-    
-
     const data = await req.file()
 
     if(!data?.file) {
